@@ -1,0 +1,26 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <!-- Dark: утвержденная палитра (ТЗ 9.2) -->
+    <SolidColorBrush x:Key="BgBrush" Color="#121418"/>
+    <SolidColorBrush x:Key="ChromeBrush" Color="#171A20"/>
+    <SolidColorBrush x:Key="PanelBrush" Color="#B31B1F26"/>
+    <SolidColorBrush x:Key="PanelGhostBrush" Color="#4D1B1F26"/>
+    <SolidColorBrush x:Key="PanelSoloBrush" Color="#381B1F26"/>
+    <SolidColorBrush x:Key="Panel2Brush" Color="#B3171B21"/>
+    <SolidColorBrush x:Key="TextBrush" Color="#E8EBEF"/>
+    <SolidColorBrush x:Key="MutedBrush" Color="#8B939F"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#8AA7C8"/>
+    <SolidColorBrush x:Key="Accent2Brush" Color="#A5ADB9"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#2A303A"/>
+    <SolidColorBrush x:Key="HoverBrush" Color="#0DE8EBEF"/>
+    <SolidColorBrush x:Key="CursorRingBrush" Color="#8AA7C8"/>
+    <SolidColorBrush x:Key="MarkedBgBrush" Color="#298AA7C8"/>
+    <SolidColorBrush x:Key="MarkedEdgeBrush" Color="#8AA7C8"/>
+
+    <Color x:Key="GlowColor">#59000000</Color>
+    <sys:Double x:Key="GlowBlur">5</sys:Double>
+    <sys:Double x:Key="GlowDepth">1</sys:Double>
+    <sys:Double x:Key="BgArtOpacity">0.22</sys:Double>
+    <sys:Double x:Key="InactiveDimOpacity">0.40</sys:Double>
+</ResourceDictionary>

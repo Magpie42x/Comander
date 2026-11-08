@@ -1,0 +1,24 @@
+# сборка
+bin/
+obj/
+staging/
+dist/
+
+# внутренние материалы разработки (не публикуются)
+scratch/
+tools/
+mockups/
+nabrosok.txt
+PLAN.md
+TECH_SPEC_DRAFT.md
+WORKLOG_KIMI.md
+HANDOFF_PROMPT.md
+
+# мусор ОС/редакторов
+Thumbs.db
+*.user
+.vs/
+
+# временные файлы сборки/релиза
+.tmp/
+*[наброск]*

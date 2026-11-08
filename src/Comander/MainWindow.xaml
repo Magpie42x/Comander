@@ -1,0 +1,105 @@
+<Window x:Class="Comander.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Comander.Controls"
+        Title="Comander" Width="1180" Height="700" MinWidth="880" MinHeight="520"
+        WindowState="Maximized"
+        Icon="app.ico"
+        Background="{DynamicResource BgBrush}" Foreground="{DynamicResource TextBrush}"
+        FontFamily="{DynamicResource AppFontFamily}" FontSize="{DynamicResource AppFontSize}">
+    <Grid>
+        <!-- аниме-фон за рабочими поверхностями -->
+        <Image x:Name="BgArt" Stretch="UniformToFill" Opacity="{DynamicResource BgArtOpacity}"/>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" MinHeight="140"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition x:Name="TerminalRow" Height="0"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- заголовок -->
+            <Border Grid.Row="0" Background="{DynamicResource ChromeBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                <DockPanel Margin="14,7">
+                    <TextBlock Text="◆ Comander" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
+                        <Button x:Name="BtnThemeLight" Content="Light" Style="{DynamicResource ThemeTabStyle}"
+                                Margin="16,0,4,0" Click="OnThemeClick" ToolTip="Тема Light"/>
+                        <Button x:Name="BtnThemeDark" Content="Dark" Style="{DynamicResource ThemeTabStyle}"
+                                Margin="0,0,4,0" Click="OnThemeClick" ToolTip="Тема Dark"/>
+                        <Button x:Name="BtnThemePurple" Content="Purple" Style="{DynamicResource ThemeTabStyle}"
+                                Margin="0,0,14,0" Click="OnThemeClick" ToolTip="Тема Dark_purple"/>
+                        <Button Content="🖼 ▾" Style="{DynamicResource ChromeButtonStyle}" Padding="8,3"
+                                Margin="0,0,4,0" Click="OnBgMenu" ToolTip="Выбрать фон из списка"/>
+                        <Button x:Name="BtnBgToggle" Content="👁" Style="{DynamicResource ChromeButtonStyle}" Padding="8,3"
+                                Margin="0,0,4,0" Click="OnToggleBackground" ToolTip="Фон: вкл/выкл"/>
+                        <Button Content="⚙" Style="{DynamicResource ChromeButtonStyle}" Padding="8,3"
+                                Margin="0,0,14,0" Click="OnSettings" ToolTip="Настройки: шрифт, терминал, автозапуск"/>
+                        <TextBlock x:Name="ClockText" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource MutedBrush}" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- панели -->
+            <Grid Grid.Row="1" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="LeftCol" Width="*"/>
+                    <ColumnDefinition x:Name="GapCol" Width="44"/>
+                    <ColumnDefinition x:Name="RightCol" Width="*"/>
+                </Grid.ColumnDefinitions>
+                <controls:FilePanel x:Name="PanelLeft" Grid.Column="0"/>
+                <!-- стрелки переноса между панелями (и между машинами по SFTP) -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Button Content="→" Style="{DynamicResource ChromeButtonStyle}" Width="32" Height="32"
+                            Padding="0" FontSize="16" Margin="0,0,0,8" Click="OnTransferToRight"
+                            ToolTip="Копировать выделенное в правую панель (и на удалённую машину по SFTP)"/>
+                    <Button Content="←" Style="{DynamicResource ChromeButtonStyle}" Width="32" Height="32"
+                            Padding="0" FontSize="16" Click="OnTransferToLeft"
+                            ToolTip="Копировать выделенное в левую панель (и с удалённой машины по SFTP)"/>
+                </StackPanel>
+                <controls:FilePanel x:Name="PanelRight" Grid.Column="2"/>
+            </Grid>
+
+            <!-- встроенный терминал (Ctrl+`): высота тянется сплиттером -->
+            <GridSplitter x:Name="TerminalSplitter" Grid.Row="2" Height="6" Margin="10,0"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                          Background="Transparent" Visibility="Collapsed"
+                          ToolTip="Потянуть — изменить высоту терминала"/>
+            <controls:ConsolePanel x:Name="Terminal" Grid.Row="3"
+                                   Margin="10,0,10,10" Visibility="Collapsed"/>
+
+            <!-- статусбар -->
+            <Border Grid.Row="4" Background="{DynamicResource ChromeBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0">
+                <DockPanel Margin="12,5">
+                    <TextBlock x:Name="StatusText" VerticalAlignment="Center" Margin="0,0,18,0"
+                               Foreground="{DynamicResource MutedBrush}"/>
+                    <Button DockPanel.Dock="Right" Content="F1 · Справка" FontSize="15" Padding="12,5"
+                            Style="{DynamicResource ChromeButtonStyle}" Click="OnHelp"/>
+                    <Button DockPanel.Dock="Right" Content="⌨ Терминал" FontSize="15" Padding="12,5" Margin="0,0,8,0"
+                            Style="{DynamicResource ChromeButtonStyle}" Click="OnToggleTerminal"
+                            ToolTip="Встроенный терминал (Ctrl+`)"/>
+                    <Border x:Name="TransferBox" DockPanel.Dock="Right" Margin="0,0,10,0" Padding="8,3"
+                            Background="{DynamicResource Panel2Brush}" BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1" CornerRadius="6" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <ProgressBar x:Name="TransferBar" Width="110" Height="7" Minimum="0" Maximum="100"
+                                         VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                            <TextBlock x:Name="TransferText" Margin="8,0,0,0" FontSize="11" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource MutedBrush}"/>
+                            <Button Content="✕" Padding="5,0" Margin="6,0,0,0" FontSize="10"
+                                    Style="{DynamicResource ChromeButtonStyle}" Click="OnCancelTransfer"
+                                    ToolTip="Отменить перенос"/>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock x:Name="HintsText" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,14,0"
+                               Foreground="{DynamicResource MutedBrush}"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

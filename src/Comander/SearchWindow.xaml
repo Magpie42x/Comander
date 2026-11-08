@@ -1,0 +1,80 @@
+<Window x:Class="Comander.SearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Comander.Controls"
+        Title="Comander — поиск по всей системе" Width="760" Height="500" MinWidth="520" MinHeight="320"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BgBrush}" Foreground="{DynamicResource TextBrush}"
+        FontFamily="{DynamicResource AppFontFamily}" FontSize="{DynamicResource AppFontSize}">
+    <Border Padding="14">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Искать:" VerticalAlignment="Center" Margin="0,0,6,0"
+                           Foreground="{DynamicResource MutedBrush}"/>
+                <TextBox x:Name="QueryBox" Grid.Column="1" Margin="0,0,10,0"/>
+                <TextBlock Text="Где:" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,6,0"
+                           Foreground="{DynamicResource MutedBrush}"/>
+                <TextBox x:Name="DirBox" Grid.Column="3" Margin="0,0,10,0"
+                         ToolTip="Пусто — все диски"/>
+                <Button x:Name="GoBtn" Grid.Column="4" Content="Найти"
+                        Style="{DynamicResource ChromeButtonStyle}" Padding="16,4" Click="OnGo"/>
+            </Grid>
+
+            <TextBlock x:Name="SearchStatus" Grid.Row="1" Margin="0,6,0,6" FontSize="11"
+                       Foreground="{DynamicResource MutedBrush}"
+                       Text="Поиск по именам, прямой обход каталогов, без индекса Windows. Пустой «Где» — все диски."/>
+
+            <ListView x:Name="Results" Grid.Row="2" Background="{DynamicResource PanelBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                      controls:GridViewResize.ClampToViewport="True">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Имя" Width="240">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="17" Height="17" CornerRadius="4" Margin="0,0,7,0"
+                                                Background="{Binding IconBg}">
+                                            <TextBlock Text="{Binding IconGlyph}" FontFamily="{Binding IconFont}"
+                                                       FontSize="{Binding IconSize}" FontWeight="SemiBold" Foreground="White"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Путь" Width="360" DisplayMemberBinding="{Binding FullPath}"
+                                       />
+                        <GridViewColumn Header="Размер" Width="90"
+                                       >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding SizeText}" TextAlignment="Right"
+                                               Foreground="{DynamicResource MutedBrush}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <TextBlock Grid.Row="3" Margin="0,8,0,0" FontSize="11" Foreground="{DynamicResource MutedBrush}"
+                       Text="Enter / двойной клик — перейти к файлу в панели   ·   Esc — закрыть   ·   максимум 2000 результатов"/>
+        </Grid>
+    </Border>
+</Window>
